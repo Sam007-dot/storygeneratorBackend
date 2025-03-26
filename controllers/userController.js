@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 // Register User
 exports.registerUser = async (req, res) => {
   try {
-    const { name, email, contact, aadhar, address, password, role, position } = req.body;
+    const { name, email,password } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Get the Cloudinary URL of the uploaded file
@@ -15,13 +15,8 @@ exports.registerUser = async (req, res) => {
     const newUser = new User({
       name,
       email,
-      contact,
-      aadhar,
-      address,
       password: hashedPassword,
-      position: position,
       profilePicture, // Save the Cloudinary URL
-      role: role,
     });
 
     await newUser.save();
@@ -51,11 +46,7 @@ exports.loginUser = async (req, res) => {
                 id: user._id,
                 name: user.name,
                 email: user.email,
-                contact: user.contact,
-                aadhar: user.aadhar,
-                address: user.address,
                 profilePicture: user.profilePicture,
-                role: user.role
             },
             userId: user._id, // Include userId for backward compatibility
         });
@@ -77,11 +68,7 @@ exports.getUserProfile = async (req, res) => {
     res.json({
       name: user.name,
       email: user.email,
-      contact: user.contact,
-      aadhar: user.aadhar,
-      address: user.address,
       profilePicture: user.profilePicture,
-      role: user.role
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -100,9 +87,6 @@ exports.updateUser = async (req, res) => {
     const updatedData = {
       name: req.body.name,
       email: req.body.email,
-      contact: req.body.contact,
-      aadhar: req.body.aadhar,
-      address: req.body.address,
     };
 
     // If a new profile picture is uploaded, update it
@@ -145,21 +129,4 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
-exports.getAllTeachers = async (req, res) => {
-  try {
-    const teachers = await User.find({ position: 'teacher' }); // Fetch only teachers
-    res.status(200).json(teachers);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
-
-exports.getAllStudents = async (req, res) => {
-  try {
-    const students = await User.find({ position: 'student' }); // Fetch only teachers
-    res.status(200).json(students);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
 

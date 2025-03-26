@@ -1,33 +1,8 @@
-// const express = require('express');
-// const multer = require('multer');
-// const path = require('path');
-// const { registerUser, loginUser, getUserProfile } = require('../controllers/userController');
-// const router = express.Router();
-
-// // Multer configuration for profile picture upload
-// const storage = multer.diskStorage({
-//     destination: (req, file, cb) => {
-//       cb(null, path.join(__dirname, '../uploads'));
-//     },
-//     filename: (req, file, cb) => {
-//       cb(null, Date.now() + '-' + file.originalname);
-//     },
-//   });
-// const upload = multer({ storage });
-
-// // Routes
-// router.post('/register', upload.single('profilePicture'), registerUser);
-// router.post('/login', loginUser);
-// router.get('/profile/:id', getUserProfile);
-
-// module.exports = router;
-
-
 const express = require('express');
 const multer = require('multer');
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const cloudinary = require('../config/cloudinaryConfig');
-const { registerUser, loginUser, getUserProfile, updateUser, getAllUsers, getAllTeachers, getAllStudents } = require('../controllers/userController');
+const { registerUser, loginUser, getUserProfile, updateUser, getAllUsers } = require('../controllers/userController');
 const router = express.Router();
 
 
@@ -48,6 +23,4 @@ router.post('/login', loginUser);
 router.get('/profile/:id', getUserProfile);
 router.patch('/update/:id', upload.single('profilePicture'), updateUser);
 router.get('/all', getAllUsers); // API endpoint to fetch all users
-router.get('/students', getAllStudents); // Get students only
-router.get('/teachers', getAllTeachers); // Get teachers only
 module.exports = router;
