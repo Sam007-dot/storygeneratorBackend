@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors({
-    origin: "http://localhost:5000", // Corrected CORS origin
+    origin: "https://storybanaao.netlify.app", // Corrected CORS origin
     credentials: true // Allows cookies if needed
 }));  
 
